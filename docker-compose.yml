@@ -1,0 +1,40 @@
+version: "3"
+
+networks:
+    networks_conteiners:
+
+services:
+    db:
+        image: postgres:13-alpine
+        hostname: postgres
+        container_name: postgres_13
+        volumes:
+            - postgres_data:/var/lib/postgresql/data/
+        expose:
+            - 5432
+        environment:
+            - POSTGRES_USER=root
+            - POSTGRES_PASSWORD=root
+            - POSTGRES_DB=is_soft_test
+        networks:
+            - networks_conteiners
+    app:
+        build: 
+            context: ./src/
+            dockerfile: app.dockerfile
+        container_name: web_api
+        command: |
+            bash -c 'while !</dev/tcp/db/5432; do sleep 1; done; uvicorn app.main:app --reload --workers 1 --host 0.0.0.0 --port 8000'
+        volumes:
+            - ./src/:/usr/src/app/
+        ports:
+            - 8002:8000
+        environment:
+            - IS_SOFT_DATABASE_URL=postgresql://root:root@db/is_soft_test
+        depends_on:
+            - "db"
+        networks:
+            - networks_conteiners
+
+volumes:
+    postgres_data:
