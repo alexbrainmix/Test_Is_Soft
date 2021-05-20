@@ -1,6 +1,6 @@
 from fastapi import FastAPI
-from app.db.base import database, metadata, engine
-from app.route import group, user
+from db.base import database, metadata, engine
+from route import group, user
 
 
 metadata.create_all(bind=engine)

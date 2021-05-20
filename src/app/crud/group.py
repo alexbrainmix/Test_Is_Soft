@@ -1,7 +1,7 @@
 import datetime
-from app.models.models import Group
-from app.db.groups import groups
-from app.db.base import database
+from models.models import Group
+from db.groups import groups
+from db.base import database
 
 
 async def create(obj: Group):

@@ -1,7 +1,7 @@
 import datetime
-from app.models.models import User
-from app.db.users import users
-from app.db.base import database
+from models.models import User
+from db.users import users
+from db.base import database
 
 
 async def create(obj: User):
